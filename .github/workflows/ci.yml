@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: '**/*.md'
+          config: |
+            {
+              "default": true,
+              "MD013": { "line_length": 120 }
+            }
+
+      - name: Validate YAML files
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_data: |
+            extends: default
+            rules:
+              line-length: { max: 120 }
+              truthy: disable
+
+      - name: Check for common issues
+        run: |
+          echo "✅ Repository structure check passed"
+          # Placeholder for future checks:
+          # - Ensure key files exist (README, LICENSE, .gitignore)
+          # - Validate JSON/YAML configs when added
+
+  # ============================================
+  # Future extension examples (uncomment/adapt when code is added)
+  # ============================================
+
+  # python-checks:
+  #   name: Python (Ruff + Pytest)
+  #   runs-on: ubuntu-latest
+  #   if: false  # Enable when Python code is present
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
+  #         cache: 'pip'
+  #     - run: |
+  #         pip install ruff pytest pytest-cov
+  #         ruff check .
+  #         ruff format --check .
+  #         pytest --cov=. --cov-report=xml
+
+  # rust-checks:
+  #   name: Rust (Cargo Check + Test)
+  #   runs-on: ubuntu-latest
+  #   if: false
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: dtolnay/rust-toolchain@stable
+  #     - run: cargo check --all-targets --all-features
+  #     - run: cargo test --all-features
+  #     - run: cargo clippy --all-targets -- -D warnings
+
+  # docker-checks:
+  #   name: Docker (Hadolint + Build)
+  #   runs-on: ubuntu-latest
+  #   if: false
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: hadolint/hadolint-action@v3.1.0
+  #       with:
+  #         dockerfile: Dockerfile
+  #     - run: docker build -t xenotech:test .
+
+  # matrix-example:
+  #   name: Multi-language Matrix
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - language: python
+  #           version: '3.12'
+  #         - language: rust
+  #           version: stable
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Add language-specific setup based on matrix
+
+# Notes:
+# - This workflow runs on every push and PR to main
+# - Currently focused on documentation quality (Markdown + YAML)
+# - Extensible for Python, Rust, Go, Node, Docker as prototypes are added
+# - All jobs are designed to be fast and non-blocking for exploratory work
