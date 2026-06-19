@@ -1,8 +1,5 @@
 version: 2
 updates:
-  # ============================================
-  # GitHub Actions (currently active)
-  # ============================================
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -18,52 +15,3 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
-    # Only create PRs for security updates + version updates
-    # You can change to "version-updates" or "security-updates" only if desired
-
-  # ============================================
-  # Future package ecosystems (uncomment when relevant code is added)
-  # ============================================
-
-  # Python (pip / requirements.txt, pyproject.toml, setup.py)
-  # - package-ecosystem: "pip"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-  #     day: "monday"
-  #     time: "06:00"
-  #     timezone: "Europe/Berlin"
-  #   groups:
-  #     python-dependencies:
-  #       patterns:
-  #         - "*"
-  #   open-pull-requests-limit: 3
-
-  # Rust (Cargo.toml)
-  # - package-ecosystem: "cargo"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-  #   groups:
-  #     rust-dependencies:
-  #       patterns:
-  #         - "*"
-
-  # Docker (Dockerfile, docker-compose.yml)
-  # - package-ecosystem: "docker"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-
-  # Node.js / npm / yarn / pnpm
-  # - package-ecosystem: "npm"
-  #   directory: "/"
-  #   schedule:
-  #     interval: "weekly"
-
-# Notes:
-# - This configuration runs Dependabot weekly on Monday mornings (Berlin time)
-# - GitHub Actions updates are grouped into a single PR to reduce noise
-# - Open PR limit prevents flooding the repo when many updates are available
-# - Add new ecosystems as you introduce Python, Rust, Docker, or Node code into the repository
-# - You can also enable security-only updates or change the schedule as needed
